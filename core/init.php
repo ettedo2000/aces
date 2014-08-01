@@ -3,7 +3,7 @@ $GLOBALS['config'] = array(
 	'mysql' => array(
 		'host' 		=> 'localhost',
 		'username' 	=> 'root',
-		'password' 	=> 'password',
+		'password' 	=> 'passw',
 		'db' 		=> 'db'
 	),
 	'remember' => array(
