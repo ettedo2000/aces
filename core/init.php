@@ -2,9 +2,9 @@
 $GLOBALS['config'] = array(
 	'mysql' => array(
 		'host' 		=> 'localhost',
-		'username' 	=> 'all0aces',
-		'password' 	=> 'thecenter$100',
-		'db' 		=> 'aces1234'
+		'username' 	=> 'root',
+		'password' 	=> 'passw',
+		'db' 		=> 'db'
 	),
 	'remember' => array(
 		'cookie_name'	=> 'hash',
