@@ -1,15 +1,23 @@
 <?php require_once 'core/init.php'; 
+$user = new User();
+if($user->isLoggedIn()) {
+	echo 'You can not be Loged in to access this page';
+	echo "<p><input type='button' value='Retry' onClick='history.go(-1)'></p>";
+	exit;
+}
 if(Input::exists()) {
 	if(Token::check(Input::get('token'))) {
-		$user = new User();
+		
 
 		$remember = (Input::get('remember') === 'on') ? true : false;
 		$login = $user->login(Input::get('username'), Input::get('password'), $remember);
 
 		if($login) {
+			
 			Redirect::to('index.php');
 		} else 
 		  {
+			
 			Redirect::to('includes/errors/login_error.php');
 		}
 	}
@@ -38,7 +46,7 @@ a:visited {
 </head>
 
 <body>
-<div class="container">
+<div class="container"><!-- InstanceBeginEditable name="LoginHeader" --><!-- InstanceEndEditable -->
 <div class="header"><img src="Images/banner1.png" width="100%" height="133" alt="logo" />
 <!-- end .header --></div>
 <div class="header2">
@@ -72,7 +80,12 @@ a:visited {
   <a href="contact.php"><img src="Images/button1.png" width="112" height="38" alt="contact" /></a>
   <a href="register.php"><img src="Images/button2.png" width="112" height="39" alt="Be a Member" /></a> 
   <a href="login.php"><img src="Images/button3.png" width="115" height="38" alt="Login" /></a> 
-  </div>  <!-- end .sidebar1 -->
+  <br /><br />
+
+  </div>  
+
+ 
+  <!-- end .sidebar1 -->
   <div class="content">
   <!-- InstanceBeginEditable name="EditRegion4" -->
 
@@ -100,10 +113,9 @@ a:visited {
   </tr>
 </table>
     </form>
-  <p>Forgott your <a href="reset_passw.php">Password</a> or <a href="reset_usern.php">Username</a></p>
-  <p><a href="reset_usern.php">Testing</a></p>
-  <br/>
-<p>If theer are any problems with this Form please contact: <a href="mailto:odetteds@comcast.net">Maintnance</a></p>
+  <p>Forgott your <a href="reset_passw.php">Password</a> or <a href="reset_usern.php">Username</a>  <br/>
+</p>
+  <p>If there are any problems with this Form please contact: <a href="mailto:odetteds@comcast.net">Maintnance</a></p>
   <!-- InstanceEndEditable -->
   
   <!-- end .content --></div>
@@ -127,13 +139,13 @@ document.write(random_img[random_number]);
   <div class="footer">
    This website is created and maintained by <a href="mailto:odetteds@comcast.net.com">Odette Simons </a><br/>
    © Copyright 2014 All Right Reserved / <a href="Development%20Report.pdf">Last updated</a>: 
-   <!-- #BeginDate format:Am2 -->8/1/14<!-- #EndDate -->
+   <!-- #BeginDate format:Am2 -->8/4/14<!-- #EndDate -->
    <br/><br/>
    <a href="index.php">Home</a> | <a href="register.php">Become a Member</a> | <a href="profile.php">Member Profiles </a>| <a href="login.php">Login</a> | <a href="contact.php">Contact Us</a> | <a href="page1.html">Services Offered</a> | <a href="page1.html">Payment</a> | <a href="page1.html">FAQ</a> | <a href="page1.html">Advertise</a> | <a href="page1.html">Links</a><br/>
   </div>
     <!-- end .footer -->
     
-  <!-- end .container --></div>
+<!-- end .container --></div>
 <script type="text/javascript">
 var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
 </script>

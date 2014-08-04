@@ -58,6 +58,7 @@ class User {
 			throw new Exception('There was a problem creating an recover password.');
 		}
 	}
+	
 	//setup of contact Form database
 	public function contact($fields = array()) {
 		if(!$this->_db->insert('contact', $fields)) {
@@ -74,7 +75,7 @@ class User {
 			throw new Exception('There was a problem updating.');
 		}
 	}
-
+	
 	public function login($username = null, $password = null, $remember = false) {
 
 		if(!$username && !$password && $this->exists()) {
@@ -123,7 +124,7 @@ class User {
 
 		return false;
 	}
-
+	
 	public function isLoggedIn() {
 		return $this->_isLoggedIn;
 	}
@@ -198,11 +199,12 @@ class User {
 		';
 		$headers .= "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-		$headers .= 'From: ACES Password Admin <odetteds@comcast.net>' . "\r\n";
-		$headers .= 'Cc: odetteds@comcast.net' . "\r\n";
+		$headers .= 'From: ACES Password Admin <fairtradetn@gmail.com>' . "\r\n";
+		$headers .= 'Cc: fairtradetn@gmail.com' . "\r\n";
 		
 		if(mail($to,$subject,$message,$headers)){
-			echo "<h3>We have sent the password reset link to your email id <b>".$to."</b></h3>"; 
+			echo "<h3>We have sent the password reset link to your email id <b>".$to."</b></h3>";
+			echo '<a href = "index.php">Home</a>'; 
 	}}
 	
 		public function mailUsername($to,$username){
@@ -211,6 +213,7 @@ class User {
 		$uri = 'http://'. $_SERVER['HTTP_HOST'] ;
 		$message = '
 		Forgot Username For ACES<br/>
+		<b>automated message, do not reply</b><br/>
   		Username for '.$email.';<br/><br/>
 		Your Username is:  <b>'.$username.'</b><br/><br/>
 		
@@ -219,8 +222,8 @@ class User {
 		';
 		$headers .= "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-		$headers .= 'From: ACES Username Admin <odetteds@comcast.net>' . "\r\n";
-		$headers .= 'Cc: odetteds@comcast.net' . "\r\n";
+		$headers .= 'From: ACES Username Admin <fairtradetn@gmail.com>' . "\r\n";
+		$headers .= 'Cc: fairtradetn@gmail.com' . "\r\n";
 		
 		if(mail($to,$subject,$message,$headers)){
 			echo "<h3>We have sent a email to <b>".$to." with username</b></h3>";

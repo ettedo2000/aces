@@ -22,7 +22,10 @@ a:visited {
 </head>
 
 <body>
-<div class="container">
+<div class="container"><!-- InstanceBeginEditable name="LoginHeader" -->
+  
+ <?php include 'includes/login_user_header.php'; ?>
+<!-- InstanceEndEditable -->
 <div class="header"><img src="Images/banner1.png" width="100%" height="133" alt="logo" />
 <!-- end .header --></div>
 <div class="header2">
@@ -56,7 +59,12 @@ a:visited {
   <a href="contact.php"><img src="Images/button1.png" width="112" height="38" alt="contact" /></a>
   <a href="register.php"><img src="Images/button2.png" width="112" height="39" alt="Be a Member" /></a> 
   <a href="login.php"><img src="Images/button3.png" width="115" height="38" alt="Login" /></a> 
-  </div>  <!-- end .sidebar1 -->
+  <br /><br />
+
+  </div>  
+
+ 
+  <!-- end .sidebar1 -->
   <div class="content">
   <!-- InstanceBeginEditable name="EditRegion4" -->
 	<div class="user_bar" >
@@ -64,22 +72,13 @@ a:visited {
     if(Session::exists('home')){
     	echo Session::flash('home');
     }
-	
-    $user = new User();
-	
+		
 	if($user->isLoggedIn()) {
 	?>   
-	Hello <?php echo escape($user->data()->username); ?></a>!
-	<a href="logout.php">Log out</a> | <a href="update.php">Account</a>
-	<?php
+	Hello <?php echo escape($user->data()->username); ?>!<?php
 	if($user->hasPermission('admin')) {
-		echo 'You are a Administrator!';
-		?>
-        <a href="db_admin.php">Update DB</a>
-        <?php
+		echo 'You are a Administrator! <a href="db_admin.php">Update DB</a> ' ;
 	}
-	
-	
 } else { 
   echo 'Welcome: GUEST!';
 }?>
@@ -115,13 +114,13 @@ document.write(random_img[random_number]);
   <div class="footer">
    This website is created and maintained by <a href="mailto:odetteds@comcast.net.com">Odette Simons </a><br/>
    © Copyright 2014 All Right Reserved / <a href="Development%20Report.pdf">Last updated</a>: 
-   <!-- #BeginDate format:Am2 -->7/23/14<!-- #EndDate -->
+   <!-- #BeginDate format:Am2 -->8/3/14<!-- #EndDate -->
    <br/><br/>
    <a href="index.php">Home</a> | <a href="register.php">Become a Member</a> | <a href="profile.php">Member Profiles </a>| <a href="login.php">Login</a> | <a href="contact.php">Contact Us</a> | <a href="page1.html">Services Offered</a> | <a href="page1.html">Payment</a> | <a href="page1.html">FAQ</a> | <a href="page1.html">Advertise</a> | <a href="page1.html">Links</a><br/>
   </div>
     <!-- end .footer -->
     
-  <!-- end .container --></div>
+<!-- end .container --></div>
 <script type="text/javascript">
 var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
 </script>

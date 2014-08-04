@@ -1,112 +1,73 @@
 <?php require_once 'core/init.php'; 
-$user = new User();
- if($user->isLoggedIn()) {
-	echo '<b>You can not be Loged in to access this page</b>';
-	echo "<p><input type='button' value='Retry' onClick='history.go(-1)'></p>";
+$user = new User();	
+
+if(!$user->isLoggedIn()) {
+	echo 'Only members can acess this page';
 	exit;
 }
 
-if(Input::exists()) {
-
-	if(Token::check(Input::get('token'))) {
-		$validate = new Validate();
-		$validation = $validate->check($_POST, array(
-			'username' => array(
-				'required' => true,
-				'min' => 2,
-				'max' => 20,
-				'unique' => 'users'),
-			'password' => array(
-				'required' => true,
-				'min' => 6),
-			'password_again' => array(
-				'required' => true,
-				'matches' => 'password'),
-			'first_name' => array(
-				'required' => true,
-				'min' => 2,
-				'max' => 30),
-			'last_name' => array(
-				'required' => true,
-				'min' => 2,
-				'max' => 30),
-			'email' => array(
-				'required' => true,
-				'email_tag' => true,
-				'min' => 2,
-				'max' => 60,
-				'unique' => 'email'),
-			'address1' => array(
-				'min' => 6,
-				'max' => 60),
-			'address2' => array(
-				'max' => 45),
-			'city' => array(
-				'min' => 5,
-				'max' => 45),
-			'state' => array(
-				'max' => 2),
-			'zip' => array(
-				'max' => 5),
-			'country' => array(
+	if(Input::exists()) {
+		if(Token::check(Input::get('token'))) {
+			$validate = new Validate();
+			$validation = $validate->check($_POST, array(
+				'city' => array(
+					'required' => true,
+					'min' => 3,
+					'max' => 45),
+				'state' => array(
+					'max' => 2),
+				'zip' => array(
+					'max' => 5),
+				'country' => array(
+					'required' => true,
 					'max' => 60),
-			'phone' => array(
-				'max' => 10)
-		));
-		
-
-		if($validation->passed()) {
-			$user = new User();
-
-			$salt = Hash::salt(32);
-
-			try {
-				$user->create(array(
-					'username' 	=> Input::get('username'),
-					'password' 	=> Hash::make(Input::get('password'), $salt),
-					'salt'		=> $salt,
-					'first_name'=> Input::get('first_name'),
-					'last_name' => Input::get('last_name'),
-					'email' 	=> Input::get('email'),
-					'address1' 	=> Input::get('address1'),
-					'address2' 	=> Input::get('address2'),
-					'city' 		=> Input::get('city'),
-					'state' 	=> Input::get('state'),
-					'zip' 		=> Input::get('zip'),
-					'country' 	=> Input::get('country'),
-					'phone' 	=> Input::get('phone'),
-					'joined'	=> date('Y-m-d H:i:s'),
-					'group'		=> 1
-				));
-				$username = $_POST['username'];
-				//echo $username .'<br/>You have registered sucessfully: <a href = "login.php">Login</a>';
-				Session::flash('home', 'You have registered sucessfully: <a href = "login.php">Login</a>  ');
+				'intro' => array(
+					'required' => true,
+					'min' => 10,
+					'max' => 1000),
+				'edu' => array(
+					'max' => 300),
+				'proff' => array(
+					'max' => 300),
+				'accomp' => array(
+					'max' => 5000)
+			));
+	
+			if($validation->passed()) {
+				
+				try{
+				$user->update(array(
+						'city' 		=> Input::get('city'),
+						'state' 	=> Input::get('state'),
+						'zip' 		=> Input::get('zip'),
+						'country' 	=> Input::get('country'),
+						'intro'     => Input::get('intro'),
+						'edu'       => Input::get ('edu'),
+						'proff'     => Input::get('proff'),
+						'accomp'    => Input::get('accomp')
+						));
+					
+				
+				Session::flash('home', 'Your Profile has been updated!');
 				Redirect::to('index.php');
-
-			} catch(Exception $e) {
-				die($e->getMessage());
-			}
-
-		} else {
-			$validation = false;
+					
+				} catch(Exception $e) {
+					die($e->getMessage());
+				}
 			
+			} else {
+				$validation = false;
+				
+			}
 		}
 	}
-}
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/Layout.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>ACES</title>
-<style type="text/css">
-h3 {
-	font-size: 14px;
-	color: #79684E;
-}
-</style>
 <!-- InstanceEndEditable -->
 <link href="CSS/thrColLiqHdr.css" rel="stylesheet" type="text/css" />
 <link href="SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
@@ -124,7 +85,9 @@ a:visited {
 </head>
 
 <body>
-<div class="container"><!-- InstanceBeginEditable name="LoginHeader" --><!-- InstanceEndEditable -->
+<div class="container"><!-- InstanceBeginEditable name="LoginHeader" -->
+<?php include 'includes/login_user_header.php'; ?>
+<!-- InstanceEndEditable -->
 <div class="header"><img src="Images/banner1.png" width="100%" height="133" alt="logo" />
 <!-- end .header --></div>
 <div class="header2">
@@ -166,7 +129,7 @@ a:visited {
   <!-- end .sidebar1 -->
   <div class="content">
   <!-- InstanceBeginEditable name="EditRegion4" -->
-<?php 
+ <?php 
  if ($validation === false){
 	 ?> <div class="user_bar" >
      <?php
@@ -176,58 +139,37 @@ a:visited {
 	?> </div> <?php
  }
 	?>
- <!-- InstanceEndEditable -->
+  <!-- InstanceEndEditable -->
   <!-- InstanceBeginEditable name="EditRegion3" --> 
 
-    <h1>Registration Form:</h1>
-        <form action="" method="post">
-        <h3> <em>Required Fields </em></h3>
-    <table width="548" border="0" cellspacing="10" class="form_field" >
-  <tr>
-    <td width="228"><label for="username">Username :</label></td>
-    <td width="286"><input name="username" type="text" id="username" size="40" ></td>
-  </tr>
-  <tr>
-    <td><label for="first_name">First Name: </label></td>
-    <td><input name="first_name" type="text" id="first_name" size="40" ></td>
+    <h2>Create /Update Your Profile:  </h2>
+    <p>To change first and last name go to <a href="update.php">View/Update Your Account</a></p>
+
+  <form action="" method="post" enctype="multipart/form-data">
+    <table width="550" border="0" class="form_field" >
+    <tr>
+      <td>Profile Image:</td>
+      <td><input type="file" name="profile"></td>
+    </tr>
+    <tr>
+      <td width="228">Username:</td>
+      <td width="391"><?php echo escape($user->data()->username); ?></td>
+    </tr>
+  <td><label for="first_name">First Name: </label></td>
+    <td><?php echo escape($user->data()->first_name); ?></td>
   </tr>
       <tr>
-    <td><label for="last_name">Last Name: </label></td>
-    <td><input name="last_name" type="text" id="last_name" size="40" ></td>
-  </tr>
-  <tr>
-    <td><label for="email">Email</label> 
-    address:</td> 
-<td><input name="email" type="text" id="email" size="40" ></td>
-  </tr>
-  <tr>
-    <td><label for="password">New Password :</label></td>
-    <td> <input name="password" type="password" id="password" size="41" /></td>
-  </tr>
-  <tr>
-    <td><label for="password">Confirm New Password :</label></td>
-    <td><input name="password_again" type="password" id="password_again" size="41" /></td>
-  </tr>
-</table>
-<br/>
-     <h3> <em>Optional Fields</em></h3>
-    <table width="548" border="0" cellspacing="10" class="form_field">
-  <tr>
-    <td width="228"><label for="address1">Address 1 :</label></td>
-    <td width="286"><input name="address1" type="text" id="address1" size="40" ></td>
-  </tr>
-  <tr>
-    <td><label for="address2">Apartment #: </label></td>
-    <td><input name="address2" type="text" id="address2" size="40" ></td>
-  </tr>
+        <td><label for="last_name">Last Name:</label></td>
+        <td><?php echo escape($user->data()->last_name); ?></td>
+      </tr>
   <tr>
     <td><label for="city">City :</label></td>
-    <td> <input name="city" type="text" id="city" size="40"></td>
+    <td> <input name="city" type="text" id="city" size="40" value="<?php echo escape($user->data()->city); ?>"></td>
   </tr>
-  <tr>
     <td>State :</td>
-    <td><select name="state" size="1">
-  <option value=""> </option>
+    <td>
+  <select name="state" size="1">
+  <option value="<?php echo escape($user->data()->state); ?>"><?php echo escape($user->data()->state); ?></option>
   <option value="AK">AK</option>
   <option value="AL">AL</option>
   <option value="AR">AR</option>
@@ -282,13 +224,13 @@ a:visited {
 </select></td>
   </tr>
   <tr>
-    <td><label for="zip"></label> 
-    Zip Code:</td>
-    <td><input name="zip" type="text" id="zip" size="20" ></td>
+    <td><label for="zip">Zip Code:</label></td>
+    <td><input name="zip" type="text" id="zip" size="20" value="<?php echo escape($user->data()->zip); ?>"></td>
   </tr>
-    <tr>
+   <tr>
     <td>Country:</td>
     <td><select name="country" size="1">
+<option value="<?php echo escape($user->data()->country); ?>"><?php echo escape($user->data()->country); ?></option>
 <option value="  ">      </option>
 <option value="Afganistan">Afghanistan</option>
 <option value="Albania">Albania</option>
@@ -537,20 +479,52 @@ a:visited {
 <option value="Zimbabwe">Zimbabwe</option>
 </select>
     </td>
-  <tr>
-    <td><label for="phone">Phone number:<br/><h6>(no spaces ex:4235555555)</h6></label></td>
-    <td><input name="phone" type="text" id="phone" size="40"></td>
   </tr>
   <tr>
-    <td height="48" align="center"><input name="reset" type="reset" value="Reset" />&nbsp;&nbsp;<input name="submit" type="submit" value="Register" /> </td>
-    <td><input type="hidden" name="token" value="<?php echo Token::generate(); ?>"></td>
+    <td valign="top"><label for="intro">Introduction:</label></td>
+    <td><textarea name="intro" cols="55" rows="10" id="intro" type="text" ><?php echo ($user->data()->intro); ?></textarea><br/><h5>Write a short Introduction about yourself <br/>
+    max: 1000 charachters</h5></td>
   </tr>
-</table>
-    </form>
-    
-<p>Already a Member: <strong><a href="login.php">LOGIN IN HERE</a></strong> 
-<br/>
-<p>If there are any problems with this Form please contact: <a href="mailto:odetteds@comcast.net">Maintnance</a></p>  <!-- InstanceEndEditable -->
+    <tr>
+    <td><label for="edu">Education:</label></td> 
+<td><input name="edu" type="text" id="edu" size="58" value="<?php echo escape($user->data()->edu); ?>" ></td>
+  </tr>
+    <tr>
+    <td width="228"><label for="proff">Proffession :</label></td>
+    <td width="391"><input name="proff" type="text" id="proff" size="58" value="<?php echo escape($user->data()->proff); ?>" ></td>
+  </tr>
+  <tr>
+    <td valign="top"><label for="accomp">Accomplishment: </label></td>
+    <td><textarea name="accomp" cols="55" rows="15" id="accomp" type="text"><?php echo ($user->data()->accomp); ?></textarea><br/><h5>Write about your Professional and Personal <br/>
+    Accomplishments max: 5000 charachters</h5></td>
+  </tr>
+  <tr>
+    <td valign="top">Formatting Tips:</td>
+    <td style="font-size:12px">
+      <table width="352">
+        <tr>
+          <td width="162"><p>&lt;b&gt;<strong>Bold</strong> &lt;/b&gt;</p>
+            <p>&lt;i&gt; <em>Italic</em> &lt;/i&gt; </p>
+            <p>&lt;u&gt; <U>Underline</U> &lt;/u&gt;</p></td>
+          <td width="174">&lt;ul&gt;<br />
+  &lt;li&gt;list1&lt;/li&gt;<br />
+  &lt;li&gt;list2&lt;/li&gt;<br />
+  &lt;/ul&gt;</td>
+        </tr>
+        <tr>
+          <td colspan="2">&lt;a href=&quot;http://www.google.com&quot;&gt;GOOGLE&lt;/a&gt;</td>
+          </tr>
+      </table>
+      <p>&nbsp;</p></td></td>
+  </tr>
+    <tr>
+      <td height="45" align="center"><input type="submit" value="Create/Update Profile"></td>
+      <td><input type="hidden" name="token" value="<?php echo Token::generate(); ?>"></td>
+    </tr>
+  </table>
+  </form>
+  
+  <!-- InstanceEndEditable -->
   
   <!-- end .content --></div>
   <div class="sidebar2">
@@ -573,7 +547,7 @@ document.write(random_img[random_number]);
   <div class="footer">
    This website is created and maintained by <a href="mailto:odetteds@comcast.net.com">Odette Simons </a><br/>
    © Copyright 2014 All Right Reserved / <a href="Development%20Report.pdf">Last updated</a>: 
-   <!-- #BeginDate format:Am2 -->8/3/14<!-- #EndDate -->
+   <!-- #BeginDate format:Am2 -->8/4/14<!-- #EndDate -->
    <br/><br/>
    <a href="index.php">Home</a> | <a href="register.php">Become a Member</a> | <a href="profile.php">Member Profiles </a>| <a href="login.php">Login</a> | <a href="contact.php">Contact Us</a> | <a href="page1.html">Services Offered</a> | <a href="page1.html">Payment</a> | <a href="page1.html">FAQ</a> | <a href="page1.html">Advertise</a> | <a href="page1.html">Links</a><br/>
   </div>

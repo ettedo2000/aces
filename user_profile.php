@@ -1,4 +1,18 @@
-<?php require_once 'core/init.php'; ?>
+<?php require_once 'core/init.php'; 
+ if(!$username = Input::get('user')) {
+	Redirect::to('index.php');
+} else {
+	$user = new User($username);
+	//echo $username;
+	
+	if(!$user->exists()) {
+		Redirect::to(404);
+	} else {
+		//echo 'exist';
+		$data = $user->data();
+	}
+}
+  ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/Layout.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -23,7 +37,6 @@ a:visited {
 
 <body>
 <div class="container"><!-- InstanceBeginEditable name="LoginHeader" -->
-<?php include 'includes/login_user_header.php'; ?>
 <!-- InstanceEndEditable -->
 <div class="header"><img src="Images/banner1.png" width="100%" height="133" alt="logo" />
 <!-- end .header --></div>
@@ -68,23 +81,52 @@ a:visited {
   <!-- InstanceBeginEditable name="EditRegion4" -->
 
   <!-- InstanceEndEditable -->
-  <!-- InstanceBeginEditable name="EditRegion3" --> <h1>Users Profile:</h1>
-<?php  $user = DB::getInstance()->query("SELECT * FROM `users` WHERE `group` =1 ORDER BY username ASC LIMIT 0 , 30;") ?>
-<table width="600" border="0">
-  
-  <?php
-  foreach($user->results() as $user) {
-	
-    echo '<tr><td>Username:</td>';
-    echo '<td> <a href="user_profile.php?user='.$user->username.'">',$user->username;'</a></td>';
-    echo '<td>Joined:</td>';
-    echo '<td>',$user->joined ,'</td></tr>'; } 
-	?>
-
-</table>
-   
-	
-
+  <!-- InstanceBeginEditable name="EditRegion3" --> 
+  <table width="567" border="0" class="user_barI">
+        <tr>
+        <td width="216" height="142"><?php
+		if (empty($user->data()->profile) === false) {
+		echo '<img width="126" height="127" src="' , $user->data()->profile, '" alt="', $user->data()->username, '\'s Profile Image">';
+		}else{
+        echo'<img src="Images/male-upload-md.png" width="126" height="127" alt="upload image" />';} 
+		?> </td>
+        <td width="318"><strong><?php echo escape($user->data()->first_name);?> <?php echo escape($user->data()->last_name); ?><br/><?php echo escape($user->data()->city); ?><br/>
+        <?php echo escape($user->data()->state);?> <?php echo escape($user->data()->zip); ?><br/> <?php echo escape($user->data()->country); ?></strong></td>
+      </tr>
+      <tr>
+        <td height="36" colspan="2"><strong>Introduction:</strong></td>
+        </tr>
+      <tr>
+        <td height="45" colspan="2" valign="top" bgcolor="#FFFFFF" ><?php echo nl2br($user->data()->intro); ?></td>
+      </tr>
+      <tr>
+        <td height="36" colspan="2"><strong>Education:</strong>  </strong></td>
+      </tr>
+      <tr>
+        <td height="36" colspan="2" bgcolor="#FFFFFF"><?php echo ($user->data()->edu); ?></td>
+      </tr>
+      <tr>
+        <td height="36" colspan="2"><strong>Proffession: </strong></td>
+      </tr>
+      <tr>
+        <td height="36" colspan="2" bgcolor="#FFFFFF"><?php echo ($user->data()->proff); ?></td>
+      </tr>
+      <tr>
+        <td height="36" colspan="2"><strong>Professional and Personal Accomplishments:</strong></td>
+        </tr>
+      <tr>
+        <td height="81" colspan="2" valign="top" bgcolor="#FFFFFF"><?php echo nl2br($user->data()->accomp); ?></td>
+      </tr>
+      <tr>
+        <td height="35" colspan="2"><strong>List of downloded files: (comming soon)</strong></td>
+      </tr>
+      <tr valign="top">
+        <td height="54" colspan="2" bgcolor="#FFFFFF">&nbsp;</td>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
   <!-- InstanceEndEditable -->
   
   <!-- end .content --></div>

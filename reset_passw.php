@@ -31,7 +31,7 @@ if($user->isLoggedIn()) {
 						'created'=> date('Y-m-d H:i:s')
 						));	
 						
-						
+					exit;	
 					} catch(Exception $e) {
 						die($e->getMessage());
 					}

@@ -1,4 +1,11 @@
-<?php require_once 'core/init.php'; ?>
+<?php include 'core/init.php'; 
+$user = new User();	
+
+if(!$user->isLoggedIn()) {
+	echo 'Only members can acess this page';
+	exit;
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/Layout.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -66,25 +73,26 @@ a:visited {
   <!-- end .sidebar1 -->
   <div class="content">
   <!-- InstanceBeginEditable name="EditRegion4" -->
+  
 
   <!-- InstanceEndEditable -->
-  <!-- InstanceBeginEditable name="EditRegion3" --> <h1>Users Profile:</h1>
-<?php  $user = DB::getInstance()->query("SELECT * FROM `users` WHERE `group` =1 ORDER BY username ASC LIMIT 0 , 30;") ?>
-<table width="600" border="0">
+  <!-- InstanceBeginEditable name="EditRegion3" --> 
+  <h2>Upload Files:</h2>
+  <form action="upload.php" method="post" enctype="multipart/form-data">
+    <table width="550" border="0" class="form_field" >
+  <tr>
+    <td><label for="file">Upload File:</label></td>
+    <td><input name="file" type="file"></td>
+  </tr>
+    <tr>
+      <td height="45" align="center"><input type="submit" value="Upload"></td>
+      <td><input type="hidden" name="token" value="<?php echo Token::generate(); ?>"></td>
+    </tr>
+  </table>
+</form>
   
-  <?php
-  foreach($user->results() as $user) {
-	
-    echo '<tr><td>Username:</td>';
-    echo '<td> <a href="user_profile.php?user='.$user->username.'">',$user->username;'</a></td>';
-    echo '<td>Joined:</td>';
-    echo '<td>',$user->joined ,'</td></tr>'; } 
-	?>
-
-</table>
-   
-	
-
+  <p>&nbsp;</p>
+  <p><a href="core/init.php">If</a> there are any problems with this Form please contact: <a href="mailto:odetteds@comcast.net">Maintnance</a></p>
   <!-- InstanceEndEditable -->
   
   <!-- end .content --></div>
@@ -108,7 +116,7 @@ document.write(random_img[random_number]);
   <div class="footer">
    This website is created and maintained by <a href="mailto:odetteds@comcast.net.com">Odette Simons </a><br/>
    © Copyright 2014 All Right Reserved / <a href="Development%20Report.pdf">Last updated</a>: 
-   <!-- #BeginDate format:Am2 -->8/4/14<!-- #EndDate -->
+   <!-- #BeginDate format:Am2 -->8/3/14<!-- #EndDate -->
    <br/><br/>
    <a href="index.php">Home</a> | <a href="register.php">Become a Member</a> | <a href="profile.php">Member Profiles </a>| <a href="login.php">Login</a> | <a href="contact.php">Contact Us</a> | <a href="page1.html">Services Offered</a> | <a href="page1.html">Payment</a> | <a href="page1.html">FAQ</a> | <a href="page1.html">Advertise</a> | <a href="page1.html">Links</a><br/>
   </div>

@@ -44,9 +44,7 @@ if(!$user->isLoggedIn()) {
 					}
 				}
 			} else {
-				foreach($validate->errors() as $error) {
-					echo $error, '<br>';
-				}
+				$validation = false;
 			}
 	}
 }
@@ -74,7 +72,7 @@ a:visited {
 </head>
 
 <body>
-<div class="container">
+<div class="container"><!-- InstanceBeginEditable name="LoginHeader" --> <?php include 'includes/login_user_header.php'; ?><!-- InstanceEndEditable -->
 <div class="header"><img src="Images/banner1.png" width="100%" height="133" alt="logo" />
 <!-- end .header --></div>
 <div class="header2">
@@ -108,12 +106,25 @@ a:visited {
   <a href="contact.php"><img src="Images/button1.png" width="112" height="38" alt="contact" /></a>
   <a href="register.php"><img src="Images/button2.png" width="112" height="39" alt="Be a Member" /></a> 
   <a href="login.php"><img src="Images/button3.png" width="115" height="38" alt="Login" /></a> 
-  </div>  <!-- end .sidebar1 -->
+  <br /><br />
+
+  </div>  
+
+ 
+  <!-- end .sidebar1 -->
   <div class="content">
   <!-- InstanceBeginEditable name="EditRegion4" -->
-  <div class="user_bar">
-  <a href="logout.php">Log out</a> | <a href="update.php">Account</a>
-  </div>
+
+<?php 
+ if ($validation === false){
+	 ?> <div class="user_bar" >
+     <?php
+ 				foreach($validate->errors() as $error) {
+					echo $error, '<br>';
+				}
+	?> </div> <?php
+ }
+	?>
 <!-- InstanceEndEditable -->
   <!-- InstanceBeginEditable name="EditRegion3" --> 
   <h1>Change Password:</h1>
@@ -163,13 +174,13 @@ document.write(random_img[random_number]);
   <div class="footer">
    This website is created and maintained by <a href="mailto:odetteds@comcast.net.com">Odette Simons </a><br/>
    © Copyright 2014 All Right Reserved / <a href="Development%20Report.pdf">Last updated</a>: 
-   <!-- #BeginDate format:Am2 -->8/1/14<!-- #EndDate -->
+   <!-- #BeginDate format:Am2 -->8/3/14<!-- #EndDate -->
    <br/><br/>
    <a href="index.php">Home</a> | <a href="register.php">Become a Member</a> | <a href="profile.php">Member Profiles </a>| <a href="login.php">Login</a> | <a href="contact.php">Contact Us</a> | <a href="page1.html">Services Offered</a> | <a href="page1.html">Payment</a> | <a href="page1.html">FAQ</a> | <a href="page1.html">Advertise</a> | <a href="page1.html">Links</a><br/>
   </div>
     <!-- end .footer -->
     
-  <!-- end .container --></div>
+<!-- end .container --></div>
 <script type="text/javascript">
 var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
 </script>

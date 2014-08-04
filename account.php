@@ -1,4 +1,11 @@
-<?php require_once 'core/init.php'; ?>
+<?php require_once 'core/init.php'; 
+$user = new User();	
+
+if(!$user->isLoggedIn()) {
+	echo 'Only members can acess this page';
+	exit;
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/Layout.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -22,9 +29,7 @@ a:visited {
 </head>
 
 <body>
-<div class="container"><!-- InstanceBeginEditable name="LoginHeader" -->
-<?php include 'includes/login_user_header.php'; ?>
-<!-- InstanceEndEditable -->
+<div class="container"><!-- InstanceBeginEditable name="LoginHeader" --><?php include 'includes/login_user_header.php'; ?><!-- InstanceEndEditable -->
 <div class="header"><img src="Images/banner1.png" width="100%" height="133" alt="logo" />
 <!-- end .header --></div>
 <div class="header2">
@@ -66,25 +71,21 @@ a:visited {
   <!-- end .sidebar1 -->
   <div class="content">
   <!-- InstanceBeginEditable name="EditRegion4" -->
-
   <!-- InstanceEndEditable -->
-  <!-- InstanceBeginEditable name="EditRegion3" --> <h1>Users Profile:</h1>
-<?php  $user = DB::getInstance()->query("SELECT * FROM `users` WHERE `group` =1 ORDER BY username ASC LIMIT 0 , 30;") ?>
-<table width="600" border="0">
-  
-  <?php
-  foreach($user->results() as $user) {
-	
-    echo '<tr><td>Username:</td>';
-    echo '<td> <a href="user_profile.php?user='.$user->username.'">',$user->username;'</a></td>';
-    echo '<td>Joined:</td>';
-    echo '<td>',$user->joined ,'</td></tr>'; } 
-	?>
-
-</table>
-   
-	
-
+  <!-- InstanceBeginEditable name="EditRegion3" --> 
+  <h2> Account Information:</h2>
+  <ul>
+    <li><a href="update.php">View/Update Your Account</a></li>
+    <li><a href="changepassw.php">Change Password</a></li>
+    <li><a href="user_profile_create.php">Create/Update Your Profile</a></li>
+    <li><a href="user_profile.php?user=<?php echo escape($user->data()->username); ?>">View Your Profile</a></p></li>
+    <li>Upload Files(<a href="files.php">comming soon</a>)</li>
+    <li>Upload Pictures(comming soon)</li>
+  </ul>
+  <p>
+  <p><br/>
+</p>
+  <p>If there are any problems with this Form please contact: <a href="mailto:odetteds@comcast.net">Maintnance</a></p>
   <!-- InstanceEndEditable -->
   
   <!-- end .content --></div>
@@ -108,7 +109,7 @@ document.write(random_img[random_number]);
   <div class="footer">
    This website is created and maintained by <a href="mailto:odetteds@comcast.net.com">Odette Simons </a><br/>
    © Copyright 2014 All Right Reserved / <a href="Development%20Report.pdf">Last updated</a>: 
-   <!-- #BeginDate format:Am2 -->8/4/14<!-- #EndDate -->
+   <!-- #BeginDate format:Am2 -->8/3/14<!-- #EndDate -->
    <br/><br/>
    <a href="index.php">Home</a> | <a href="register.php">Become a Member</a> | <a href="profile.php">Member Profiles </a>| <a href="login.php">Login</a> | <a href="contact.php">Contact Us</a> | <a href="page1.html">Services Offered</a> | <a href="page1.html">Payment</a> | <a href="page1.html">FAQ</a> | <a href="page1.html">Advertise</a> | <a href="page1.html">Links</a><br/>
   </div>
